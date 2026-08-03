@@ -1,8 +1,10 @@
+import argparse
 import logging
 import time
 import struct
 from openant.easy.node import Node
 from openant.easy.channel import Channel
+
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -16,29 +18,39 @@ CHANNEL_PERIOD = 8134  # ~4.03 Hz
 RF_FREQUENCY = 57
 
 class AntFootpod:
-    def __init__(self):
+    def __init__(self, mock_speed: float | None = None, mock_cadence: float = 60.0):
+        self.mock_speed = mock_speed      # m/s, or None to broadcast zeros when no shm
+        self.mock_cadence = mock_cadence
         self.message_count = 0
         self.payload = [0, 0, 0, 0, 0, 0, 0, 0]
         self.last_stride_time = 0
         self.strides_done = 0
         self.distance_accu = 0
         self.speed_last = 0
+        self.distance_last = 0
         self.time_rollover = 0
         self.last_time_event = time.time()
         self.program_start = time.time()
 
     def read_speed_cadence(self):
-        # Mock values for testing (replace with shared memory later)
-        speed = 0.833  # 3 km/h = 0.833 m/s
-        cadence = 60   # steps/min
-        logger.debug(f"Mock Speed: {speed:.2f} m/s, Cadence: {cadence:.2f} steps/min")
-        return speed, cadence
+        ## Mock values for testing (replace with shared memory later)
+        from multiprocessing import shared_memory
+        try:
+            shm = shared_memory.SharedMemory(name='speed_cadence')
+            speed, cadence = struct.unpack('ff', shm.buf[:8])
+            shm.close()
+            return speed, cadence
+        except:
+            if self.mock_speed is not None:
+                return self.mock_speed, self.mock_cadence
+            logger.debug("No shared memory, broadcasting zeros")
+            return 0.0, 0.0
 
     def create_next_datapage(self):
         self.message_count += 1
         speed, cadence = self.read_speed_cadence()
         if cadence == 0:
-            logger.error("Cadence is zero, skipping data page creation")
+            logger.debug("Belt stopped, broadcasting zeros")
             return [0, 0, 0, 0, 0, 0, 0, 0]
 
         # Time calculations
@@ -140,7 +152,7 @@ class AntFootpod:
                     logger.error("Failed to open channel after 3 attempts. Restarting in 5 seconds...")
                     time.sleep(5)
                     continue
-                logger.info("Broadcasting footpod data at 3 km/h... Press Ctrl+C to stop.")
+                logger.info("Broadcasting footpod data... Press Ctrl+C to stop.")
                 self.node.start()
             except KeyboardInterrupt:
                 logger.info("Stopping...")
@@ -163,5 +175,16 @@ class AntFootpod:
                         logger.error(f"Error stopping node: {e}")
 
 if __name__ == "__main__":
-    footpod = AntFootpod()
+    parser = argparse.ArgumentParser(description="ANT+ foot pod broadcaster")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable debug logging")
+    parser.add_argument("--mock-speed", type=float, metavar="KMH",
+                        help="Broadcast a fixed mock speed (km/h) when shared memory is unavailable")
+    args = parser.parse_args()
+
+    logging.getLogger().setLevel(logging.DEBUG if args.verbose else logging.INFO)
+    if not args.verbose:
+        logging.getLogger("openant").setLevel(logging.WARNING)
+
+    mock_ms = args.mock_speed / 3.6 if args.mock_speed is not None else None
+    footpod = AntFootpod(mock_speed=mock_ms)
     footpod.run()
