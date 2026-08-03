@@ -5,8 +5,8 @@ Requires=walkingpad-ble@%i.service
 
 [Service]
 User=%i
-WorkingDirectory=/home/%i/footpod-back
-ExecStart=/home/%i/footpod-back/.venv/bin/python antplus-footpod.py
+WorkingDirectory=/home/%i/pad2pod
+ExecStart=/home/%i/pad2pod/.venv/bin/python antplus-footpod.py
 Restart=on-failure
 RestartSec=5
 

@@ -1,5 +1,5 @@
 [project]
-name = "footpod-back"
+name = "pad2pod"
 version = "0.1.0"
 description = "Bridges a WalkingPad C2 treadmill to ANT+ as a foot pod (SDM profile)"
 readme = "README.md"

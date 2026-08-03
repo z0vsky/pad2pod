@@ -1,4 +1,4 @@
-# footpod-back
+# pad2pod
 
 Reads speed from a WalkingPad C2 over BLE and broadcasts it as an ANT+ foot pod (SDM profile).
 
@@ -11,8 +11,8 @@ Reads speed from a WalkingPad C2 over BLE and broadcasts it as an ANT+ foot pod 
 ## Setup
 
 ```
-git clone https://github.com/<you>/footpod-back ~/footpod-back
-cd ~/footpod-back
+git clone https://github.com/<you>/pad2pod ~/pad2pod
+cd ~/pad2pod
 uv sync
 ```
 
@@ -24,7 +24,7 @@ uv run python -m openant install
 
 ## Running as a service (systemd)
 
-The service files expect the repo at `~/footpod-back`.
+The service files expect the repo at `~/pad2pod`.
 
 ```
 sudo cp systemd/*.service /etc/systemd/system/

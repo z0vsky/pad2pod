@@ -5,8 +5,8 @@ Wants=bluetooth.target
 
 [Service]
 User=%i
-WorkingDirectory=/home/%i/footpod-back
-ExecStart=/home/%i/footpod-back/.venv/bin/python walkingpad_ble.py
+WorkingDirectory=/home/%i/pad2pod
+ExecStart=/home/%i/pad2pod/.venv/bin/python walkingpad_ble.py
 Restart=on-failure
 RestartSec=5
 
