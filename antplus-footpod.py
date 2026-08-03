@@ -15,8 +15,7 @@ def main():
 
     # Create a channel in receive mode
     channel = node.new_channel(Channel.Type.BIDIRECTIONAL_RECEIVE)
-    channel.set_id(device_type=FOOTPOD_DEVICE_TYPE, device_number=0, transmission_type=0)
-
+    channel.set_id(0, FOOTPOD_DEVICE_TYPE, 0)
     # Attach callback for received data
     channel.on_broadcast_data = on_data
 
