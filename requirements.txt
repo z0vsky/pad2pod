@@ -1,0 +1,5 @@
+# Core dependencies
+pyusb>=1.2.1
+
+# ANT+ library
+git+https://github.com/Tigge/openant.git
