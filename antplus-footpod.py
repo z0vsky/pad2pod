@@ -39,9 +39,8 @@ def main():
     node.set_network_key(0, ANT_NETWORK_KEY)
 
     channel = node.new_channel(Channel.Type.BIDIRECTIONAL_TRANSMIT)
-    channel.set_period(8134)  # ~4 Hz (Stride & Distance standard)
-    channel.set_frequency(57)
-    channel.set_id(122, 1, 1)  # 122 = Footpod profile
+    channel.assign("N:ANT+", "T:Master")
+    channel.set_id(device_number=12345, device_type=124, transmission_type=5)
 
     logger.info("Starting ANT+ footpod emulation")
     channel.open()
