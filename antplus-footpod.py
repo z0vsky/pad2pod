@@ -141,7 +141,7 @@ class AntFootpod:
                 self.channel.open()
                 return True
             except Exception as e:
-                logger.error(f"Channel setup failed: {e}. Retrying in 2 seconds...")
+                logger.error(f"Channel setup failed: {type(e).__name__}: {e}. Retrying in 2 seconds...", exc_info=True)
                 time.sleep(2)
         return False
 
