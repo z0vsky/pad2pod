@@ -1,0 +1,14 @@
+[Unit]
+Description=ANT+ foot pod broadcaster
+After=walkingpad-ble@%i.service
+Requires=walkingpad-ble@%i.service
+
+[Service]
+User=%i
+WorkingDirectory=/home/%i/footpod-back
+ExecStart=/home/%i/footpod-back/.venv/bin/python antplus-footpod.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

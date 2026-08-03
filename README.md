@@ -22,8 +22,24 @@ ANT+ USB stick udev rule (to run without sudo):
 uv run python -m openant install
 ```
 
+## Running as a service (systemd)
 
-Terminal 1 — read walking pad speed:
+```
+sudo cp systemd/*.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now walkingpad-ble@$USER antplus-footpod@$USER
+```
+
+Both services restart automatically on failure. `antplus-footpod` waits for `walkingpad-ble` to be up.
+
+Logs:
+
+```
+journalctl -fu walkingpad-ble@$USER
+journalctl -fu antplus-footpod@$USER
+```
+
+## Manual usage
 
 ```
 uv run walkingpad_ble.py
