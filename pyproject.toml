@@ -1,7 +1,7 @@
 [project]
 name = "footpod-back"
 version = "0.1.0"
-description = "Add your description here"
+description = "Bridges a WalkingPad C2 treadmill to ANT+ as a foot pod (SDM profile)"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [

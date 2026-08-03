@@ -8,7 +8,20 @@ Reads speed from a WalkingPad C2 over BLE and broadcasts it as an ANT+ foot pod 
 - Dynastream ANTUSB2 stick (ANT+)
 - USB Bluetooth dongle
 
-## Usage
+## Setup
+
+Install dependencies:
+
+```
+uv sync
+```
+
+ANT+ USB stick udev rule (to run without sudo):
+
+```
+uv run python -m openant install
+```
+
 
 Terminal 1 — read walking pad speed:
 
