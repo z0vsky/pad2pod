@@ -10,9 +10,9 @@ Reads speed from a WalkingPad C2 over BLE and broadcasts it as an ANT+ foot pod 
 
 ## Setup
 
-Install dependencies:
-
 ```
+git clone https://github.com/<you>/footpod-back ~/footpod-back
+cd ~/footpod-back
 uv sync
 ```
 
@@ -23,6 +23,8 @@ uv run python -m openant install
 ```
 
 ## Running as a service (systemd)
+
+The service files expect the repo at `~/footpod-back`.
 
 ```
 sudo cp systemd/*.service /etc/systemd/system/
@@ -40,6 +42,8 @@ journalctl -fu antplus-footpod@$USER
 ```
 
 ## Manual usage
+
+Terminal 1 — read walking pad speed:
 
 ```
 uv run walkingpad_ble.py
