@@ -11,7 +11,7 @@ Reads speed from a WalkingPad C2 over BLE and broadcasts it as an ANT+ foot pod 
 ## Setup
 
 ```
-git clone https://github.com/<you>/pad2pod ~/pad2pod
+git clone https://github.com/z0vsky/pad2pod ~/pad2pod
 cd ~/pad2pod
 uv sync
 ```
